@@ -23,6 +23,9 @@ router.get('/:username', getUserProfile);
  * @access  Private
  */
 router.put('/profile', protect, validate(updateProfileValidator), updateProfile);
+router.get('/:username', getUserProfile);
+router.post('/:username/follow', protect, followUser);
+router.delete('/:username/follow', protect, unfollowUser);
 
 export default router;
 
