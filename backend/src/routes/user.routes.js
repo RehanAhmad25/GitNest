@@ -9,22 +9,21 @@ import {
 } from '../controllers/user.controller.js';
 import { protect } from '../middleware/authMiddleware.js';
 import validate from '../middleware/validate.js';
-import { updateProfileValidator, usernameParamValidator } from '../validators/user.validators.js';
+import { updateProfileValidator } from '../validators/user.validators.js';
 
 const router = express.Router();
 
-//Public routes
-router.get('/:username', validate(usernameParamValidator), getUserProfile);
-router.get('/:username/followers', validate(usernameParamValidator), getFollowers);
-router.get('/:username/following', validate(usernameParamValidator), getFollowing);
-// Public routes
+// Static/protected routes — must be registered before dynamic /:username
+// to prevent Express from matching 'profile' as a username param
+router.put('/profile', protect, validate(updateProfileValidator), updateProfile);
+
+// Public dynamic routes
 router.get('/:username', getUserProfile);
 router.get('/:username/followers', getFollowers);
 router.get('/:username/following', getFollowing);
 
-// Protected routes
-router.put('/profile', protect, validate(updateProfileValidator), updateProfile);
-router.post('/:username/follow', protect, validate(usernameParamValidator), followUser);
-router.delete('/:username/follow', protect, validate(usernameParamValidator), unfollowUser);
+// Protected dynamic routes
+router.post('/:username/follow', protect, followUser);
+router.delete('/:username/follow', protect, unfollowUser);
 
 export default router;
