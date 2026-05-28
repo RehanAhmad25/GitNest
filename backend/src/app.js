@@ -89,12 +89,10 @@ const createApp = () => {
   app.use('/api/v1/repositories', commitHistoryRoutes);
   app.use('/api/v1/repositories', fileBrowserRoutes);
 
-  // 404 handler
   app.use((req, res, next) => {
     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404, ERROR_CODES.NOT_FOUND));
   });
 
-  // central error handler
   app.use(errorHandler);
 
   return app;
