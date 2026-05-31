@@ -26,70 +26,58 @@ import Dashboard from './pages/Dashboard';
 
 
 function App() {
-  const { isDarkMode } = useThemeStore();
+const { isDarkMode } = useThemeStore();
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
+useEffect(() => {
+if (isDarkMode) {
+document.documentElement.classList.add("dark");
+} else {
+document.documentElement.classList.remove("dark");
+}
+}, [isDarkMode]);
 
-  return (
-    <div className="min-h-screen">
-      <ToastContainer />
+return ( <div className="min-h-screen">
+  <ToastContainer />
 
-      <header className="p-4 flex justify-end border-b border-zinc-200 dark:border-zinc-800 transition-colors">
-      
-      </header>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/" element={<GitNestHomepage />} />
-        <Route path="/docs" element={<DocumentationPage />} />
-        <Route path="/pull-requests" element={<PullRequestsPage />} />
-        <Route path="/pull-requests/:id" element={<PullRequestDetailPage />} />
-        <Route path="/activities" element={<ActivityFeedPage />} />
-        <Route path="/404" element={<NotFound />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-        {/* UserProfile validates usernames locally and keeps explicit routes ahead of username handling. */}
-        <Route path="/:username" element={<UserProfile />} />
+  <ErrorBoundary>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/" element={<GitNestHomepage />} />
+      <Route path="/docs" element={<DocumentationPage />} />
+      <Route path="/pull-requests" element={<PullRequestsPage />} />
+      <Route
+        path="/pull-requests/:id"
+        element={<PullRequestDetailPage />}
+      />
+      <Route path="/activities" element={<ActivityFeedPage />} />
+      <Route
+        path="/:owner/:repo/architecture"
+        element={<RepositoryArchitecturePage />}
+      />
+      <Route
+        path="/:username/:reponame/settings/branch-protection"
+        element={<RepositorySettingsPage />}
+      />
+      <Route path="/user/:username" element={<UserProfile />} />
+      <Route path="/showcase" element={<ComponentShowcase />} />
+      <Route path="/privacy" element={<GitNestPrivacy />} />
+      <Route path="/terms" element={<GitNestTerms />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/oauth-success" element={<OAuthSuccess />} />
 
-      <ErrorBoundary>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<GitNestHomepage />} />
-          <Route path="/docs" element={<DocumentationPage />} />
-          <Route path="/pull-requests" element={<PullRequestsPage />} />
-          <Route
-            path="/pull-requests/:id"
-            element={<PullRequestDetailPage />}
-          />
-          <Route path="/activities" element={<ActivityFeedPage />} />
-          <Route path="/:owner/:repo/architecture" element={<RepositoryArchitecturePage />} />
-          <Route path="/:username/:reponame/settings/branch-protection" element={<RepositorySettingsPage />} />
-          <Route path="/user/:username" element={<UserProfile />} />
-          <Route path="/showcase" element={<ComponentShowcase />} />
-          <Route path="/privacy" element={<GitNestPrivacy />} />
-          <Route path="/terms" element={<GitNestTerms />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/oauth-success" element={<OAuthSuccess />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Route>
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  </ErrorBoundary>
 
+  <BackToTop />
+</div>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </ErrorBoundary>
-      <BackToTop />
-    </div>
-  );
+);
 }
 
 export default App;
